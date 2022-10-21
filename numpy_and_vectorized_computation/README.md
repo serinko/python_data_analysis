@@ -18,3 +18,5 @@ Numpy by itself does not provide modeling or scientific functionality, but it is
 * Data alignment and relational data manipulations for merging and joining heterogenous datasets
 * Expressing conditional logic as array expression instead of loops with *if-elif-else* branches
 * Group-wise data manipulation (aggregation, transformatiion, function application)
+
+

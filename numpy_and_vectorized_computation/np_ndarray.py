@@ -35,3 +35,11 @@ arr_zeros1 = np.zeros(10)
 arr_zeros2 = np.zeros((3,6))
 print(arr_zeros1,"\n", arr_zeros2)
 
+# Create empty array
+arr_empty1 = np.empty((2,3,2))
+print(arr_empty1)
+# sometimes it returns some uncategorized garbage
+
+# arrange - array-valued version of Python built0in range function
+arr_arng = np.arange(15)
+print(arr_arng)

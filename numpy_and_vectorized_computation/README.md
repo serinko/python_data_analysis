@@ -19,4 +19,18 @@ Numpy by itself does not provide modeling or scientific functionality, but it is
 * Expressing conditional logic as array expression instead of loops with *if-elif-else* branches
 * Group-wise data manipulation (aggregation, transformatiion, function application)
 
+## ndarrays
 
+Allow for fast modification of data:
+```python
+import numpy as np
+
+# Generate some random data
+data = np.random.randn(2,3)
+
+print(data)
+
+print(data*10)
+
+print(data + data)
+```

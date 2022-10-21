@@ -109,3 +109,40 @@ float_arr = arr.astype(np.float64)
 This can be used vise versa as well, but the decimals get truncated. Numerical strings can be astyped into int or float type.
 
 Calling `astype` always make a new array even if the orginal content had the sam dtype.
+
+## Arithmetic with NumPy Arrays
+
+Arrays enable to express batch ops on data wihout writing forloops. Numpy users call it ***vectorization***.
+Any arithmetic ops between equal-size arrays apply the op elemt-wise.
+
+```python
+arr = np.array([[1.,2.,3.],[4.,5.,6.]])
+multiple_x = arr * x
+square = arr * arr
+substraction_x = arr - x
+
+# scalar arument gets propagated to each element as well
+scalar_self = 1 / arr
+
+# arr ** 0.5
+
+```
+
+Comparison between arrays of equal size yield bolean arrays:
+
+```python
+#interpreter:
+>>> arr1 = np.array([[1.,2.,3.],[4.,5.,6.]])
+>>> arr2 = np.array([[0.,4.,1.],[7.,2.,12.]])
+>>> arr2 > arr1
+array([[False,  True, False],
+       [ True, False,  True]])
+>>> 
+```
+Evaluating ops between different sized arrays is called *broadcasting* (same book, appendix A).
+
+### Basic Indexing and Slicing
+
+
+
+

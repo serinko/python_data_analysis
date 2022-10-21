@@ -197,8 +197,8 @@ The common convention is the simplified expression with a comma separation:
 ```
 
 **Indexing Elements in NumPy array**
-| **AXES 0:** (vertical) | **AXES 1** | **-->** | **-->** |
-| --- | --- | --- | --- |
+| **AXES 0:** (vertical) | **AXES 1** | **---->** | **---->** |
+| --- | :---: | :---: | :---: |
 | **INDEX** | **0** | **1** | **2** |
 | **0** | 0,0 | 0,1 | 0,2 |
 | **1** | 1,0 | 1,1 | 1,2 |

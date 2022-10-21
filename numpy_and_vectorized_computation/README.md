@@ -197,15 +197,89 @@ The common convention is the simplified expression with a comma separation:
 ```
 
 **Indexing Elements in NumPy array**
-
-| **INDEX** | **0** | **1** | **2** |
+| **AXES 0:** (vertical) | **AXES 1** | **-->** | **-->** |
 | --- | --- | --- | --- |
+| **INDEX** | **0** | **1** | **2** |
 | **0** | 0,0 | 0,1 | 0,2 |
 | **1** | 1,0 | 1,1 | 1,2 |
 | **2** | 2,0 | 2,1 | 2,2 |
 
+**Three Dimentions**
 
+A basic index returns two-dimentional array:
 
+```python
+#interpreter:
 
+>>> arr3d = np.array([[[1,2,3],[4,5,6]],[[7,8,9],[10,11,12]]])
+>>> arr3d
+array([[[ 1,  2,  3],
+        [ 4,  5,  6]],
+
+       [[ 7,  8,  9],
+        [10, 11, 12]]])
+>>> # arr3d us a 2 x 3 array:
+>>> arr3d[0]
+array([[1, 2, 3],
+       [4, 5, 6]])
+>>> # Both scalar values and arrays can be asigned to arr3d[0]:
+>>> old_values = arr3d[0].copy()
+>>> arr3d
+array([[[ 1,  2,  3],
+        [ 4,  5,  6]],
+
+       [[ 7,  8,  9],
+        [10, 11, 12]]])
+>>> arr3d[0]
+array([[1, 2, 3],
+       [4, 5, 6]])
+>>> arr3d[0] = 42
+>>> arr3d
+array([[[42, 42, 42],
+        [42, 42, 42]],
+
+       [[ 7,  8,  9],
+        [10, 11, 12]]])
+>>> arr3d[0] = old_values
+>>> arr3d
+array([[[ 1,  2,  3],
+        [ 4,  5,  6]],
+
+       [[ 7,  8,  9],
+        [10, 11, 12]]])
+```
+
+Similarly, two indicies return a one-dimentional array:
+
+```python
+>>> arr3d[1,0]
+array([7, 8, 9])
+>>> # this is a same expression, like indexing in two consecutive steps:
+>>> x = arr3d[1]
+>>> x
+array([[ 7,  8,  9],
+       [10, 11, 12]])
+>>> x[0]
+array([7, 8, 9])
+```
+
+**Indexing with Slices**
+
+Like Python lists (one dimention), ndarrays can be sliced with the familiar syntax.
+
+```python
+>>> arr
+array([ 0,  1,  2,  3,  4, 64, 64, 64,  8,  9])
+>>> arr[1:6]
+array([ 1,  2,  3,  4, 64])
+>>> # slicing 2D array is a bit different:
+>>> arr2d
+array([[1, 2, 3],
+       [4, 5, 6],
+       [7, 8, 9]])
+>>> arr2d[:2]
+array([[1, 2, 3],
+       [4, 5, 6]])
+```
 
 

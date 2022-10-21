@@ -281,5 +281,37 @@ array([[1, 2, 3],
 array([[1, 2, 3],
        [4, 5, 6]])
 ```
+We can see that it slices along the vertical axis 0, can be read as *"Select the first two rows or arr2d"*.
 
+Multiple sclices, just like multiple indexws may be passed:
+
+```python
+>>> arr2d[:2,1:]
+array([[2, 3],
+       [5, 6]]
+```
+By mixing integer indexes and slices, return is one dimentional slice. 
+
+```python
+>>> arr2d[1,:2]
+array([4, 5])
+>>> # Optionally select the third column but only the first two rows:
+>>> arr2d[:2,2]
+array([3, 6])
+```
+Colon itself means to taje tge entire axis - so only high dimentional axes can be sliced:
+```python
+>>> arr2d[:,:1]
+array([[1],
+       [4],
+       [7]])
+```
+Assigning to a slice expression assingns to the whole selection:
+```python
+>>> arr2d[:2,1:] = 0 
+>>> arr2d
+array([[1, 0, 0],
+       [4, 0, 0],
+       [7, 8, 9]])
+```
 

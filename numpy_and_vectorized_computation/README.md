@@ -137,11 +137,74 @@ Comparison between arrays of equal size yield bolean arrays:
 >>> arr2 > arr1
 array([[False,  True, False],
        [ True, False,  True]])
->>> 
 ```
 Evaluating ops between different sized arrays is called *broadcasting* (same book, appendix A).
 
 ### Basic Indexing and Slicing
+
+**One Dimantional Arrays**
+
+One dimentional arrays are simple as they work the same way like Python lists. 
+
+```python
+#interpreter:
+
+>>> arr = np.arange(10)
+>>> arr
+array([0, 1, 2, 3, 4, 5, 6, 7, 8, 9])
+>>> arr[5]
+5
+>>> arr[5:8]
+array([5, 6, 7])
+>>> arr[5:8] = 12
+>>> arr
+array([ 0,  1,  2,  3,  4, 12, 12, 12,  8,  9])
+```
+If we create a slice from the orgiginal array, its data mutation will reflect in the array itself as well:
+```python
+>>> arr_slice = arr[5:8]
+>>> arr_slice
+array([12, 12, 12])
+>>> arr 
+>>> arr_slice[1] = 12345
+>>> arr
+array([    0,     1,     2,     3,     4,    12, 12345,    12,     8,    9])
+```
+Furhter the '*bare*' slice will asign to all values in an array (and all the values the arr_slice represents in the main array.
+```python
+>>> arr_slice[:] = 64
+>>> arr
+array([ 0,  1,  2,  3,  4, 64, 64, 64,  8,  9])
+```
+
+####Higher Dimentional Arrays
+
+**Two Dimentions**
+
+A basic index returns a one dimentional array of that position, second index points to the value within that array (like in Python lists).
+```python
+#interpreter:
+>>> arr2d = np.array([[1,2,3],[4,5,6],[7,8,9]])
+>>> arr2d[2]
+array([7, 8, 9])
+>>> arr2d[2][2]
+9
+```
+The common convention is the simplified expression with a comma separation:
+```python
+>>> arr2d[2, 2]
+9
+```
+
+**Indexing Elements in NumPy array**
+
+| **INDEX** | **0** | **1** | **2** |
+| --- | --- | --- | --- |
+| **0** | 0,0 | 0,1 | 0,2 |
+| **1** | 1,0 | 1,1 | 1,2 |
+| **2** | 2,0 | 2,1 | 2,2 |
+
+
 
 
 

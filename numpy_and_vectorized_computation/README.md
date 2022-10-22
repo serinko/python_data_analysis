@@ -319,3 +319,111 @@ array([[1, 0, 0],
        [7, 8, 9]])
 ```
 
+## Boolean Indexing
+
+To explain, we generate an array of duplicating names and a random data one:
+
+```python
+>>> import numpy as np
+>>> names = np.array(['Bob', 'Joe', 'Will', 'Bob', 'Will', 'Joe', 'Joe'])
+>>> data = np.random.randn(7,4)
+>>> names
+array(['Bob', 'Joe', 'Will', 'Bob', 'Will', 'Joe', 'Joe'], dtype='<U4')
+>>> data
+array([[ 1.01103825,  1.59706866,  0.34615894, -0.13053395],
+       [ 0.55175913,  0.32277733, -0.58013767, -0.80211483],
+       [ 0.09152834, -0.42857792, -1.95105686,  0.5301571 ],
+       [ 0.73288807,  0.32519203, -1.03695664,  0.02228364],
+       [-1.05988744, -0.54345945, -0.58454015, -0.63411561],
+       [ 0.56522237,  1.29635438,  0.29467277, -0.05104462],
+       [ 0.26381219,  0.00957116,  0.03216799, -0.36972802]])
+```
+Each name corresponds o a row in the data and we want to select all the rowscorresponding with 'Bob'
+
+```python
+>>> names == 'Bob'
+array([ True, False, False,  True, False, False, False])
+```
+
+The boolean array is passed by indexing the array:
+
+```python
+>>> data[names == 'Bob']
+array([[ 1.01103825,  1.59706866,  0.34615894, -0.13053395],
+       [ 0.73288807,  0.32519203, -1.03695664,  0.02228364]])
+```
+**note:** As the names array is flat - it represents axes 0 for 2D array. Hence the index 'Bob' True (returning True on index 0 and 3 in array names) returns the entire rows (with the same index 0 and 3) from the array data.
+
+This can be combined with selection we used in previous examples (by indexes or slices):
+
+```python
+>>> data[names == 'Bob', 2:]
+array([[ 0.34615894, -0.13053395],
+       [-1.03695664,  0.02228364]])
+>>> data[names == 'Bob', 3]
+array([-0.13053395,  0.02228364])
+```
+
+Select everything but Bob can be done with usual boolean **!=** or negate the condition with **~**:
+
+```python
+>>> names != 'Bob'
+array([False,  True,  True, False,  True,  True,  True])
+>>> data[~(names == 'Bob')]
+array([[ 0.55175913,  0.32277733, -0.58013767, -0.80211483],
+       [ 0.09152834, -0.42857792, -1.95105686,  0.5301571 ],
+       [-1.05988744, -0.54345945, -0.58454015, -0.63411561],
+       [ 0.56522237,  1.29635438,  0.29467277, -0.05104462],
+       [ 0.26381219,  0.00957116,  0.03216799, -0.36972802]])
+```
+**~** is good to ivert a general condition:
+```python
+>>> cond = names == 'Bob'
+>>> data[~cond]
+array([[ 0.55175913,  0.32277733, -0.58013767, -0.80211483],
+       [ 0.09152834, -0.42857792, -1.95105686,  0.5301571 ],
+       [-1.05988744, -0.54345945, -0.58454015, -0.63411561],
+       [ 0.56522237,  1.29635438,  0.29467277, -0.05104462],
+       [ 0.26381219,  0.00957116,  0.03216799, -0.36972802]])
+```
+To select more names to combine multiple boolean conditions, use boolean arithmetic ops like **& (and)** and **| (or)**:
+
+```python
+>>> mask = (names == 'Bob') | (names == 'Will')
+>>> mask
+array([ True, False,  True,  True,  True, False, False])
+>>> data[mask]
+array([[ 1.01103825,  1.59706866,  0.34615894, -0.13053395],
+       [ 0.09152834, -0.42857792, -1.95105686,  0.5301571 ],
+       [ 0.73288807,  0.32519203, -1.03695664,  0.02228364],
+       [-1.05988744, -0.54345945, -0.58454015, -0.63411561]])
+```
+**note:** Selecting by boolean indexing *always* creates a copy of the data - even when returned arr is unchanged. Python key words ('and', 'or') do NOT work with boolean arrays (hence '&' , '|').
+
+Setting values with boolean arrays. Common sense:
+
+```python
+# Setting the negative values to 0:
+>>> data
+array([[1.01103825, 1.59706866, 0.34615894, 0.        ],
+       [0.55175913, 0.32277733, 0.        , 0.        ],
+       [0.09152834, 0.        , 0.        , 0.5301571 ],
+       [0.73288807, 0.32519203, 0.        , 0.02228364],
+       [0.        , 0.        , 0.        , 0.        ],
+       [0.56522237, 1.29635438, 0.29467277, 0.        ],
+       [0.26381219, 0.00957116, 0.03216799, 0.        ]])
+```
+Similarly we can set whole rows or columns using one-dimentional arr:
+```python
+>>> data[names != 'Joe'] = 9
+>>> data
+array([[9.        , 9.        , 9.        , 9.        ],
+       [0.55175913, 0.32277733, 0.        , 0.        ],
+       [9.        , 9.        , 9.        , 9.        ],
+       [9.        , 9.        , 9.        , 9.        ],
+       [9.        , 9.        , 9.        , 9.        ],
+       [0.56522237, 1.29635438, 0.29467277, 0.        ],
+       [0.26381219, 0.00957116, 0.03216799, 0.        ]])
+```
+
+These ops on 2d arr's are convenient in Pandas.

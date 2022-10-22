@@ -319,7 +319,7 @@ array([[1, 0, 0],
        [7, 8, 9]])
 ```
 
-## Boolean Indexing
+### Boolean Indexing
 
 To explain, we generate an array of duplicating names and a random data one:
 
@@ -427,3 +427,79 @@ array([[9.        , 9.        , 9.        , 9.        ],
 ```
 
 These ops on 2d arr's are convenient in Pandas.
+
+### Fancy Indexing
+
+A term adopted by Numpy to use integer arrays for indexing.
+
+```python
+>>> arr = np.empty((8,4))
+>>> for i in range(8):
+...     arr[i] = i
+... 
+>>> arr
+array([[0., 0., 0., 0.],
+       [1., 1., 1., 1.],
+       [2., 2., 2., 2.],
+       [3., 3., 3., 3.],
+       [4., 4., 4., 4.],
+       [5., 5., 5., 5.],
+       [6., 6., 6., 6.],
+       [7., 7., 7., 7.]])
+```
+We ca pass a list or ndarray of int's to select out a subset of the rows in particular order. 
+```python
+>>> arr[[4,3,6,0]]
+array([[4., 4., 4., 4.],
+       [3., 3., 3., 3.],
+       [6., 6., 6., 6.],
+       [0., 0., 0., 0.]])
+```
+Negative idxs will take rows from the end:
+
+```python
+>>> arr[[-3,-5,-7]]
+array([[5., 5., 5., 5.],
+       [3., 3., 3., 3.],
+       [1., 1., 1., 1.]])
+```
+Passing multiple index arrays retuns one dimentional array of elements corresponding to each tuple of indices.
+```python
+>>> arr = np.arange(32).reshape((8,4))
+>>> arr
+array([[ 0,  1,  2,  3],
+       [ 4,  5,  6,  7],
+       [ 8,  9, 10, 11],
+       [12, 13, 14, 15],
+       [16, 17, 18, 19],
+       [20, 21, 22, 23],
+       [24, 25, 26, 27],
+       [28, 29, 30, 31]])
+>>> arr[[1,5,7,2],[0,3,1,2]]
+# the elements create tuples of indices
+# in our case (1,0), (5,3), (7,1) and (2,2)
+# Those applied indexes (axes 0, axes 1), return the value:
+array([ 4, 23, 29, 10])
+```
+Regardless of n of dimentions of arr, the return of fancy indexing is always one-dimentional.
+
+Example from the book, which is needed to be understood:
+```python
+>>> arr
+array([[ 0,  1,  2,  3],
+       [ 4,  5,  6,  7],
+       [ 8,  9, 10, 11],
+       [12, 13, 14, 15],
+       [16, 17, 18, 19],
+       [20, 21, 22, 23],
+       [24, 25, 26, 27],
+       [28, 29, 30, 31]])
+>>> arr[[1,5,7,2]][:,[0,3,1,2]]
+array([[ 4,  7,  5,  6],
+       [20, 23, 21, 22],
+       [28, 31, 29, 30],
+       [ 8, 11,  9, 10]]
+```
+**note:** Fancy indexing always copis data into a new array, not like slicing which changes the value in the originall one. 
+
+

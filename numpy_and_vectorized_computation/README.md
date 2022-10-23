@@ -181,7 +181,7 @@ Furhter the '*bare*' slice will asign to all values in an array (and all the val
 array([ 0,  1,  2,  3,  4, 64, 64, 64,  8,  9])
 ```
 
-####Higher Dimentional Arrays
+#### Higher Dimentional Arrays
 
 **Two Dimentions**
 
@@ -503,3 +503,139 @@ array([[ 4,  7,  5,  6],
 **note:** Fancy indexing always copis data into a new array, not like slicing which changes the value in the originall one. 
 
 
+### Transposing Arrays and Swapping Axes
+
+Transposingis a form of reshaping - returns a view on the data wythout copying.
+
+`transpose` method and **T** atribute:
+
+```python
+>>> arr = np.arange(15).reshape((3,5))
+>>> arr
+array([[ 0,  1,  2,  3,  4],
+       [ 5,  6,  7,  8,  9],
+       [10, 11, 12, 13, 14]])
+>>> 
+>>> arr.T
+array([[ 0,  5, 10],
+       [ 1,  6, 11],
+       [ 2,  7, 12],
+       [ 3,  8, 13],
+       [ 4,  9, 14]])
+```
+
+**np.dot()**
+
+[Here](https://www.tutorialspoint.com/numpy/numpy_dot.htm) is the function explained as following:
+
+This function returns the dot product of two arrays. For 2-D vectors, it is the equivalent to matrix multiplication. For 1-D arrays, it is the inner product of the vectors. For N-dimensional arrays, it is a sum product over the last axis of a and the second-last axis of b.
+
+```python
+import numpy.matlib 
+import numpy as np 
+
+a = np.array([[1,2],[3,4]]) 
+b = np.array([[11,12],[13,14]]) 
+np.dot(a,b)
+
+# OUTPUT:
+
+[[37  40] 
+ [85  92]] 
+ 
+# Authors explanation of the calculation:
+
+[[1*11+2*13, 1*12+2*14],[3*11+4*13, 3*12+4*14]] 
+```
+Some examples:
+
+```python
+>>> arr = np.arange(9).reshape((3,3))
+>>> arr2 = arr*2
+>>> arr
+array([[0, 1, 2],
+       [3, 4, 5],
+       [6, 7, 8]])
+>>> arr2
+array([[ 0,  2,  4],
+       [ 6,  8, 10],
+       [12, 14, 16]])
+>>> np.dot(arr,arr2)
+array([[ 30,  36,  42],
+       [ 84, 108, 132],
+       [138, 180, 222]])
+
+>>> arr3 = np.arange(4).reshape((2,2))
+>>> arr4 = arr3*2
+>>> arr3
+array([[0, 1],
+       [2, 3]])
+>>> arr4
+array([[0, 2],
+       [4, 6]])
+>>> np.dot(arr3,arr4)
+array([[ 4,  6],
+       [12, 22]])
+
+```
+
+Example from the book combined with **T** `transpose` method:
+
+```python
+>>> arr = np.random.randn(6,3)
+>>> arr
+array([[ 0.30768203, -0.55973789,  0.96629775],
+       [-0.80424033, -1.5430307 , -1.29970808],
+       [-0.52657437,  0.06968624,  0.95123863],
+       [ 0.70538779, -0.48687397,  0.32860383],
+       [ 0.2763433 ,  0.8308471 , -1.67640043],
+       [ 0.9382419 ,  0.86512439, -0.41448351]])
+>>> 
+>>> np.dot(arr.T, arr)
+array([[ 2.47298674,  1.72991128,  0.22133754],
+       [ 1.72991128,  4.37489979, -0.38049662],
+       [ 0.22133754, -0.38049662,  6.61792282]])
+```
+
+On Higher dimentional arrays - `transpose` will accept a tuple of axis numbers to permute the axes:
+
+```python
+>>> arr = np.arange(16).reshape((2,2,4))
+>>> arr
+array([[[ 0,  1,  2,  3],
+        [ 4,  5,  6,  7]],
+
+       [[ 8,  9, 10, 11],
+        [12, 13, 14, 15]]])
+>>> 
+>>> arr.transpose((1,0,2))
+array([[[ 0,  1,  2,  3],
+        [ 8,  9, 10, 11]],
+
+       [[ 4,  5,  6,  7],
+        [12, 13, 14, 15]]])
+```
+
+The result is a re-order with 2nd axis first, 1st axis second and the 3rd axis unchaged. 
+ndarray has a method to simply swap axes called `swapaxes` - takes a pair of axis numbers and switches them.
+
+```python
+>>> arr
+array([[[ 0,  1,  2,  3],
+        [ 4,  5,  6,  7]],
+
+       [[ 8,  9, 10, 11],
+        [12, 13, 14, 15]]])
+>>> arr.swapaxes(1,2)
+array([[[ 0,  4],
+        [ 1,  5],
+        [ 2,  6],
+        [ 3,  7]],
+
+       [[ 8, 12],
+        [ 9, 13],
+        [10, 14],
+        [11, 15]]])
+```
+
+No copy was made. 

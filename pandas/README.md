@@ -17,4 +17,88 @@ from pandas import Series, DataFrame
 
 The most important datastructures are the mentioned ***Series*** and ***DataFrame***. An accessible solution to most of the problems accross the aplications. 
 
+### Series
+
+A Series is one-dimetional array/object with a sequence of values and an associated array of data labels, called *index*.
+
+```python
+>>> obj
+0    2
+1    8
+2   -9
+3    4
+dtype: int64
+```
+* Index on the left, values on the right.
+* If not specified, index created is from 0 to N - 1 (N is len(values))
+* *values* and *index* can be called - *index* will return its attributes
+
+```python
+>>> obj.values
+array([ 2,  8, -9,  4])
+>>> obj.index
+RangeIndex(start=0, stop=4, step=1)
+```
+* Series can be made with index identifying each data point with a label:
+
+```python
+>>> obj2 = pd.Series([2,8,-9,4], index=['d','b','a','c'])
+>>> obj2
+d    2
+b    8
+a   -9
+c    4
+dtype: int64
+>>> obj2.index
+Index(['d', 'b', 'a', 'c'], dtype='object')
+```
+* Selecting a value or a set of them can be done using labels in the index:
+
+```python
+>>> obj2['a']
+-9
+>>> obj2['d'] = 6
+>>> obj2[['c','a','d']]
+c    4
+a   -9
+d    6
+dtype: int64
+
+```
+* NumPy fns and ops (filtering, boolean array, scalar multiplic, math fns) will preserve the index-value link
+
+```python
+>>> obj2[obj2 > 0]
+d    6
+b    8
+c    4
+dtype: int64
+>>> obj2 * 2
+d    12
+b    16
+a   -18
+c     8
+dtype: int64
+>>> np.exp(obj2)
+>>>
+>>> import numpy as np
+>>>
+>>> np.exp(obj2)
+d     403.428793
+b    2980.957987
+a       0.000123
+c      54.598150
+dtype: float64
+
+```
+
+* Series can be seen as a fixed-length, ordered dict - based on the key-value similar mapping of values to data values.
+
+```python
+>>> 'b' in obj2
+True
+>>> 'e' in obj2
+False
+
+```
 

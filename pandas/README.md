@@ -159,4 +159,30 @@ texas         False
 dtype: bool
 ```
 
+One of Series features is the automatic alignment by index label in arithmetic operations, it is similar to join operations in databases.
+
+```python
+>>> obj3
+ohio      35000
+texas     71000
+oregon    16000
+utah       5000
+dtype: int64
+>>> 
+>>> obj4
+california        NaN
+ohio          35000.0
+oregon        16000.0
+texas         71000.0
+dtype: float64
+>>> 
+>>> obj3 + obj4
+california         NaN
+ohio           70000.0
+oregon         32000.0
+texas         142000.0
+utah               NaN
+dtype: float64
+```
+
 

@@ -104,6 +104,8 @@ False
 
 **Dictionary into Series**
 
+When passing a dict, the index in Series = dict keys
+
 ```python
 >>> sdata = {'ohio':35000, 'texas':71000, 'oregon':16000, 'utah':5000}
 >>> obj3 = pd.Series(sdata)
@@ -113,6 +115,48 @@ texas     71000
 oregon    16000
 utah       5000
 dtype: int64
+```
+This can be changed by passing another data and asigning them as index to Series
+
+```python
+>>> states = ['california','ohio','oregon','texas']
+>>> obj4 = pd.Series(sdata, index=states)
+>>> obj4
+california        NaN
+ohio          35000.0
+oregon        16000.0
+texas         71000.0
+dtype: float64
+```
+
+Three values in sdata were asigned, no value for 'california' was found, it appears as NaN (not a number). NaN is Pandas version of *NA* - mark missing.
+'utah' was not included in `states`, it is excluded from the resulting object.
+
+Pandas have functions `isnull` and `notnull` to detect missing data.
+
+```python
+>>> pd.isnull(obj4)
+california     True
+ohio          False
+oregon        False
+texas         False
+dtype: bool
+>>> 
+>>> pd.notnull(obj4)
+california    False
+ohio           True
+oregon         True
+texas          True
+dtype: bool
+>>> 
+>>> # Series has those as instance methods too:
+>>> 
+>>> obj4.isnull()
+california     True
+ohio          False
+oregon        False
+texas         False
+dtype: bool
 ```
 
 

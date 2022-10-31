@@ -102,3 +102,17 @@ False
 
 ```
 
+**Dictionary into Series**
+
+```python
+>>> sdata = {'ohio':35000, 'texas':71000, 'oregon':16000, 'utah':5000}
+>>> obj3 = pd.Series(sdata)
+>>> obj3
+ohio      35000
+texas     71000
+oregon    16000
+utah       5000
+dtype: int64
+```
+
+

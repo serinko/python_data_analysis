@@ -128,6 +128,7 @@ oregon        16000.0
 texas         71000.0
 dtype: float64
 ```
+**usnull() & notnull()**
 
 Three values in sdata were asigned, no value for 'california' was found, it appears as NaN (not a number). NaN is Pandas version of *NA* - mark missing.
 'utah' was not included in `states`, it is excluded from the resulting object.
@@ -159,6 +160,8 @@ texas         False
 dtype: bool
 ```
 
+**automatic index alignment**
+
 One of Series features is the automatic alignment by index label in arithmetic operations, it is similar to join operations in databases.
 
 ```python
@@ -183,6 +186,42 @@ oregon         32000.0
 texas         142000.0
 utah               NaN
 dtype: float64
+```
+
+**name attribute**
+
+Series object and index have a `name` attribute. That integrates other areas of pandas functionality
+
+```python
+>>> obj4.name = 'population'
+>>> obj4.index.name = 'state'
+>>> 
+>>> obj4
+state
+california        NaN
+ohio          35000.0
+oregon        16000.0
+texas         71000.0
+Name: population, dtype: float64
+```
+
+A Series index can be changed by asignment.
+
+```python
+>>> obj
+0    2
+1    8
+2   -9
+3    4
+dtype: int64
+>>> obj.index = ['bob','steve','jeff','ryan']
+>>> 
+>>> obj
+bob      2
+steve    8
+jeff    -9
+ryan     4
+dtype: int64
 ```
 
 

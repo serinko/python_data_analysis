@@ -224,4 +224,54 @@ ryan     4
 dtype: int64
 ```
 
+### DataFrame
+
+* A DataFrame reresents a rectangular table of data and it contains an ordered collection of columns, each of which can be a different value type (numeric, string, boolean, etc). 
+* DataFrame has row and column index. can be seen as a dict of Series all sharing the same index
+* The data is stored as one or more two-dimentional blocks rather tham a list, dict etc.
+* However physically two dimentional - can represent higher dimentional data in tabular format using hierarchial indexing.
+
+One of the most common ways to construct DataFrame is to approach it from a dict of equal-length ist or NumPy arrays
+
+```python
+>>> data = {'state':['ohio','ohio','ohio', 'nevada','nevada','nevada'], 
+...     'year':[2000,2001,2002,2001,2002,2003],
+...     'pop':[1.5,1.7,3.6,2.4,2.9,3.2]}
+>>>
+>>> pd.DataFrame(data)
+    state   year  pop
+0    ohio  2000  1.5
+1    ohio  2001  1.7
+2    ohio  2002  3.6
+3  nevada  2001  2.4
+4  nevada  2002  2.9
+5  nevada  2003  3.2
+```
+
+`head()` method can be used to select only first five rows.
+
+```python
+>>> frame = pd.DataFrame(data)
+>>> 
+>>> frame.head()
+    state   year  pop
+0    ohio  2000  1.5
+1    ohio  2001  1.7
+2    ohio  2002  3.6
+3  nevada  2001  2.4
+4  nevada  2002  2.9
+```
+
+The sequence of columns can be specified to make a different order
+
+```python
+>>> pd.DataFrame(data, columns=['year','state','pop'])
+    yea   state  pop
+0  2000    ohio  1.5
+1  2001    ohio  1.7
+2  2002    ohio  3.6
+3  2001  nevada  2.4
+4  2002  nevada  2.9
+5  2003  nevada  3.2
+```
 

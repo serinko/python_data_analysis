@@ -347,5 +347,20 @@ five   2002  nevada  2.9   4.0
 six    2003  nevada  3.2   5.0
 
 ```
+When asignhning lists or arrays to a column, values length must match the DataFrame length. If you asign Series, its lables will be realigned exactly to the DataFrame index, inserting missing values as NaN.
+
+```python
+>>> val = pd.Series([-1.2, -1.5, -1.7], index =['two','four','five'])
+>>> frame2['dept'] = val
+>>> 
+>>> frame2
+       year   state  pop  dept
+one    2000    ohio  1.5   NaN
+two    2001    ohio  1.7  -1.2
+three  2002    ohio  3.6   NaN
+four   2001  nevada  2.4  -1.5
+five   2002  nevada  2.9  -1.7
+six    2003  nevada  3.2   Na
+```
 
 

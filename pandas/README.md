@@ -292,5 +292,60 @@ six    2003  nevada  3.2  NaN
 >>> frame2.columns
 Index(['year', 'state', 'pop', 'dept'], dtype='object')
 ```
+A column in DataFrame can be retrieved as a Series by dict notation or by attribute:
+
+```python
+>>> frame2['state']
+one        ohio
+two        ohio
+three      ohio
+four     nevada
+five     nevada
+six      nevada
+Name: state, dtype: object
+>>> frame2.year
+one      2000
+two      2001
+three    2002
+four     2001
+five     2002
+six      2003
+Name: yea, dtype: int64
+```
+
+Rows can be retrieved by position or name with `loc` attribute
+
+```python
+>>> frame2.loc['three']
+year     2002
+state    ohio
+pop       3.6
+dept      NaN
+Name: three, dtype: object
+```
+Columns can be modified by asignment by a scalar value or an array of values
+
+```python
+>>> frame2['dept'] = 16.5
+>>> frame2
+        year  state  pop  dept
+one    2000    ohio  1.5  16.5
+two    2001    ohio  1.7  16.5
+three  2002    ohio  3.6  16.5
+four   2001  nevada  2.4  16.5
+five   2002  nevada  2.9  16.5
+six    2003  nevada  3.2  16.5
+>>> 
+>>> frame2['dept'] = np.arange(6.)
+>>> frame2
+        year  state  pop  dept
+one    2000    ohio  1.5   0.0
+two    2001    ohio  1.7   1.0
+three  2002    ohio  3.6   2.0
+four   2001  nevada  2.4   3.0
+five   2002  nevada  2.9   4.0
+six    2003  nevada  3.2   5.0
+
+```
 
 

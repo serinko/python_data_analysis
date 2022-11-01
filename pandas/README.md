@@ -22,6 +22,7 @@ The most important datastructures are the mentioned ***Series*** and ***DataFram
 A Series is one-dimetional array/object with a sequence of values and an associated array of data labels, called *index*.
 
 ```python
+>>> obj = pd.Series([2,8,-9,4])
 >>> obj
 0    2
 1    8

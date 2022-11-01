@@ -275,4 +275,22 @@ The sequence of columns can be specified to make a different order
 4  2002  nevada  2.9
 5  2003  nevada  3.2
 ```
+If a collumn non represented in the dict is passed, it will appear as NaN:
+
+```python
+>>> frame2 = pd.DataFrame(data, columns=['year','state','pop','dept'],
+...             index=['one','two','three','four','five','six'])
+>>> frame2
+        yea   state  pop dept
+one    2000    ohio  1.5  NaN
+two    2001    ohio  1.7  NaN
+three  2002    ohio  3.6  NaN
+four   2001  nevada  2.4  NaN
+five   2002  nevada  2.9  NaN
+six    2003  nevada  3.2  NaN
+
+>>> frame2.columns
+Index(['year', 'state', 'pop', 'dept'], dtype='object')
+```
+
 

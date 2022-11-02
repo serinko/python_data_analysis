@@ -363,4 +363,28 @@ five   2002  nevada  2.9  -1.7
 six    2003  nevada  3.2   Na
 ```
 
+Asighning a column that does not exist will create a new column. 
+
+```python
+>>> frame2['eastern'] = frame2.state == 'ohio'
+>>> frame2
+       year   state  pop  dept  eastern
+one    2000    ohio  1.5   NaN     True
+two    2001    ohio  1.7  -1.2     True
+three  2002    ohio  3.6   NaN     True
+four   2001  nevada  2.4  -1.5    False
+five   2002  nevada  2.9  -1.7    False
+six    2003  nevada  3.2   NaN    False
+```
+New columns cannot be created with `frame2.eastern` syntax.
+
+**del method**
+
+`del` will delete columns as with a dict.
+
+```python
+>>> del frame2['eastern']
+>>> frame2.columns
+Index(['year', 'state', 'pop', 'dept'], dtype='object')
+```
 

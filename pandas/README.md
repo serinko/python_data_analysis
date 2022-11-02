@@ -427,7 +427,31 @@ The keys in the inner dict are combined and sorted to form the index, unless exp
 ```
 Dicts of Series are treated in a same way
 
+```python
+>>> pdata = {'ohio':frame3['ohio'][:-1], 
+...     'nevada':frame3['nevada'][:2]}
+```
+If `index` and `columns` names are set, they will be displayed
 
+```python
+>>> frame3.index.name = 'year'; frame3.columns.name  = 'state'
+>>> 
+>>> frame3
+state  nevada  ohio
+year               
+2001      2.4   1.7
+2002      2.9   3.6
+2000      NaN   1.5
+
+```
+As in Series, the `values` attribute returns the data from DataFrame as a two-dimentional ndarray.
+
+```python
+>>> frame3.values
+array([[2.4, 1.7],
+       [2.9, 3.6],
+       [nan, 1.5]])
+```
 
 
 

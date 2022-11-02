@@ -425,6 +425,8 @@ The keys in the inner dict are combined and sorted to form the index, unless exp
 2003     NaN   NaN
 
 ```
+Dicts of Series are treated in a same way
+
 
 
 

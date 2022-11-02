@@ -387,6 +387,45 @@ New columns cannot be created with `frame2.eastern` syntax.
 >>> frame2.columns
 Index(['year', 'state', 'pop', 'dept'], dtype='object')
 ```
-Columns returned from indexing a DataFrame is a *view* on th underlying data, not a copy. Any modification on the Series will be reflected in the DataFrame.
+Columns returned from indexing a DataFrame is a *view* on th underlying data, not a copy. Any modification on the Series will be reflected in the DataFrame. For copy Series's `copy` method is needed.
+
+**Nested dict of dicts**
+
+```python
+>>> pop = {'nevada':{2001:2.4,2002:2.9},
+...     'ohio':{2000:1.5,2001:1.7,2002:3.6}}
+
+```
+If the nested dict is passed to the DataFrame, pandas will interpret the outer dict keys as the columns and the inner as the row indicies
+
+```python
+>>> frame3 = pd.DataFrame(pop)
+>>> 
+>>> frame3
+      nevada  ohio
+2001     2.4   1.7
+2002     2.9   3.6
+2000     NaN   1.5
+```
+***Transpose** using `T` syntax like in numpy
+
+```python
+>>> frame3.T
+        2001  2002  2000
+nevada   2.4   2.9   NaN
+ohio     1.7   3.6   1.5
+```
+The keys in the inner dict are combined and sorted to form the index, unless explicit index is specified.
+
+```python
+>>> pd.DataFrame(pop, index=[2001, 2002, 2003])
+      nevada  ohio
+2001     2.4   1.7
+2002     2.9   3.6
+2003     NaN   NaN
+
+```
+
+
 
 

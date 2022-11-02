@@ -387,4 +387,6 @@ New columns cannot be created with `frame2.eastern` syntax.
 >>> frame2.columns
 Index(['year', 'state', 'pop', 'dept'], dtype='object')
 ```
+Columns returned from indexing a DataFrame is a *view* on th underlying data, not a copy. Any modification on the Series will be reflected in the DataFrame.
+
 

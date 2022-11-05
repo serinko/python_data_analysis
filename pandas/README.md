@@ -234,6 +234,10 @@ dtype: int64
 
 One of the most common ways to construct DataFrame is to approach it from a dict of equal-length ist or NumPy arrays
 
+**Documentation**
+
+There are many methods and attributes which can be used when constructing, modyfying or calling DataFrame. Documentation: https://pandas.pydata.org/pandas-docs/stable/reference/api/pandas.DataFrame.html
+
 ```python
 >>> data = {'state':['ohio','ohio','ohio', 'nevada','nevada','nevada'], 
 ...     'year':[2000,2001,2002,2001,2002,2003],

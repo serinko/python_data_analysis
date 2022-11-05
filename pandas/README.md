@@ -17,7 +17,7 @@ from pandas import Series, DataFrame
 
 The most important datastructures are the mentioned ***Series*** and ***DataFrame***. An accessible solution to most of the problems accross the aplications. 
 
-### Series
+## Series
 
 A Series is one-dimetional array/object with a sequence of values and an associated array of data labels, called *index*.
 
@@ -225,7 +225,7 @@ ryan     4
 dtype: int64
 ```
 
-### DataFrame
+## DataFrame
 
 * A DataFrame reresents a rectangular table of data and it contains an ordered collection of columns, each of which can be a different value type (numeric, string, boolean, etc). 
 * DataFrame has row and column index. can be seen as a dict of Series all sharing the same index
@@ -452,6 +452,3 @@ array([[2.4, 1.7],
        [2.9, 3.6],
        [nan, 1.5]])
 ```
-
-
-

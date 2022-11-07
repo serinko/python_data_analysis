@@ -258,4 +258,95 @@ c    3
 dtype: int64
 ```
 
+Slicing with labels is possible, but **the endpoint is inclusive!**
+
+```python
+>>> obj2.loc["b":"c"]
+b    2
+c    3
+dtype: int64
+```
+
+Values can be asigned to a slice - again, ingluding the endpoint
+
+```python
+>>> obj2.loc["b":"c"] = 5
+>>> obj2
+a    1
+b    5
+c    5
+dtype: int64
+```
+
+**Indexing into a DataFrame**
+
+Indexing into a DataFrame retrieves one or more columns either with a single value or sequence.
+
+```python
+>>> data = pd.DataFrame(np.arange(16).reshape((4, 4)),
+...     index=["Ohio", "Colorado", "Utah", "New York"],
+...     columns=["one", "two", "three", "four"])
+>>> data
+          one  two  three  four
+Ohio        0    1      2     3
+Colorado    4    5      6     7
+Utah        8    9     10    11
+New York   12   13     14    15
+
+>>> data["two"]
+Ohio         1
+Colorado     5
+Utah         9
+New York    13
+Name: two, dtype: int64
+>>> data[["three","one"]]
+          three  one
+Ohio          2    0
+Colorado      6    4
+Utah         10    8
+New York     14   12
+
+```
+
+**Special cases of indexing**
+
+1. Slicing or selecting data with Boolean array
+
+```python
+>>> data[:2]
+          one  two  three  four
+Ohio        0    1      2     3
+Colorado    4    5      6     7
+
+>>> data[data["three"] > 5]
+          one  two  three  four
+Colorado    4    5      6     7
+Utah        8    9     10    11
+New York   12   13     14    15
+```
+The row selection syntax data[:2] is provided as a convenience. Passing a single element or a list to the [] operator selects columns.
+
+2. Indexing with a Boolean DataFrame, such as one produced by a scalar comparison
+
+```python
+>>> data < 5
+            one    two  three   four
+Ohio       True   True   True   True
+Colorado   True  False  False  False
+Utah      False  False  False  False
+New York  False  False  False  False
+```
+
+Possible to use this DataFrame to assign the value 0 to each location with the value `True`
+
+```python
+>>> data[data < 5] = 0
+>>> data
+          one  two  three  four
+Ohio        0    0      0     0
+Colorado    0    5      6     7
+Utah        8    9     10    11
+New York   12   13     14    15
+```
+
 

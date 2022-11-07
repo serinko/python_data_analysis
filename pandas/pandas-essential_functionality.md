@@ -80,11 +80,11 @@ d      7   NaN           8
 | `index` | Use the passed sequence as the new index labels. |
 | `columns` | Use the passed sequence as the new column labels. |
 | `axis` | The axis to reindex, whether |
-| | "index" (rows) or |
-| | "columns". The default is |
-| | "index". You can alternately do |
-| | reindex(index=new_labels) or |
-| | reindex(columns=new_labels). |
+| | `index` (rows) or |
+| | `columns`. The default is |
+| | `index`. You can alternately do |
+| | `reindex(index=new_labels)` or |
+| | `reindex(columns=new_labels)`. |
 | `method` | Interpolation (fill) method; `ffill` fills forward, while `bfill` fills backward. |
 | `fill_value` | Substitute value to use when introducing missing data by reindexing. Use `fill_value="missing"` (the default behavior) when you want absent labels to have null values in the result. |
 | `limit` | When forward filling or backfilling, the maximum size gap (in number of elements) to fill. |

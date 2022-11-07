@@ -85,14 +85,8 @@ d      7   NaN           8
 | | "index". You can alternately do |
 | | reindex(index=new_labels) or |
 | | reindex(columns=new_labels). |
-| `method` | Interpolation (fill) method; "ffill" |
-| | fills forward, while "bfill" fills |
-| | backward. |
-| `fill_value` | Substitute value to use when introducing missing |
-| | data by reindexing. Use |
-| | fill_value="missing" (the default |
-| | behavior) when you want absent labels to have null |
-| | values in the result. |
+| `method` | Interpolation (fill) method; `ffill` fills forward, while `bfill` fills backward. |
+| `fill_value` | Substitute value to use when introducing missing data by reindexing. Use `fill_value="missing"` (the default behavior) when you want absent labels to have null values in the result. |
 | `limit` | When forward filling or backfilling, the maximum size gap (in number of elements) to fill. |
 | `tolerance` | When forward filling or backfilling, the maximum size gap (in absolute numeric distance) to fill for inexact matches. |
 | `level` |	Match simple Index on level of MultiIndex; otherwise select subset of. |

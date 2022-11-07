@@ -491,6 +491,11 @@ Int64Index([0, 1, 2], dtype='int64')
 1   -2.5
 2    0.0
 dtype: float64
+>>>
+>>> obj2.index is labels
+True
+>>> obj2.index == labels
+array([ True,  True,  True])
 ```
 
 

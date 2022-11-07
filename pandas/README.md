@@ -456,3 +456,41 @@ array([[2.4, 1.7],
        [2.9, 3.6],
        [nan, 1.5]])
 ```
+
+### Index Objects
+
+pandas’s Index objects are responsible for holding the axis labels (including a DataFrame’s column names) and other metadata (like the axis name or names). Any array or other sequence of labels you use when constructing a Series or DataFrame is internally converted to an Index
+
+```python
+>>> pd.Series(np.arange(3), index=['a','b','c'])
+a    0
+b    1
+c    2
+dtype: int64
+>>> obj = pd.Series(np.arange(3), index=['a','b','c'])
+>>> index = obj.index
+>>> index[1:]
+Index(['b', 'c'], dtype='object')
+```
+Index objects are immutable - cannot be modfied by the user!
+
+```python
+>>> index[1] = 'd'
+TypeError: Index does not support mutable operations
+```
+Immutability makes it safer to share Index objects among data structures:
+
+```python
+>>> labels = pd.Index(np.arange(3))
+>>> labels
+Int64Index([0, 1, 2], dtype='int64')
+>>> 
+>>> obj2 = pd.Series([1.5, -2.5, 0], index=labels)
+>>> obj2
+0    1.5
+1   -2.5
+2    0.0
+dtype: float64
+```
+
+

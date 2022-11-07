@@ -92,3 +92,80 @@ d      7   NaN           8
 | `tolerance` | When forward filling or backfilling, the maximum size gap (in absolute numeric distance) to fill for inexact matches. |
 | `level` |	Match simple Index on level of MultiIndex; otherwise select subset of. |
 | `copy` | If `True`, always copy underlying data even if the new index is equivalent to the old index; if `False`, do not copy the data when the indexes are equivalent. |
+
+It's possible to reindex by using the `loc` operator, and many users prefer to always do it this way. This works only if all of the new index labels already exist in the DataFrame (whereas reindex will insert missing data for new labels):
+
+```python
+>>> frame.loc[["a", "d", "c"], ["California", "Texas"]]
+   California  Texas
+a           2      1
+d           8      7
+c           5      4
+```
+
+## Dropping Entries from an Axis
+
+Dropping one or more entries from an axis is simple if you already have an index array or list without those entries. `reindex` method or `loc` indexing can be used, `drop` method will return a new object with th indicated value or values deleted from an axis
+
+```python
+>>> obj = pd.Series(np.arange(5.), index=["a", "b", "c", "d", "e"])
+>>> obj
+a    0.0
+b    1.0
+c    2.0
+d    3.0
+e    4.0
+dtype: float64
+>>> new_obj = obj.drop("c")
+>>> new_obj
+a    0.0
+b    1.0
+d    3.0
+e    4.0
+dtype: float64
+>>> obj.drop(["d","c"])
+a    0.0
+b    1.0
+e    4.0
+dtype: float64
+```
+With DataFrame, index values can be deleted from either axis
+
+The drop labels can be defined by keywords `index`, `columns`, `axis=<number>` (like in NumPy) or `axis="columns`:
+
+```python
+>>> data = pd.DataFrame(np.arange(16).reshape((4, 4)),
+...     index=["Ohio", "Colorado", "Utah", "New York"],
+...     columns=["one", "two", "three", "four"])
+>>> data
+          one  two  three  four
+Ohio        0    1      2     3
+Colorado    4    5      6     7
+Utah        8    9     10    11
+New York   12   13     14    15
+>>> data.drop(index=["Colorado","Ohio"])
+          one  two  three  four
+Utah        8    9     10    11
+New York   12   13     14    15
+>>> data.drop(columns=["two"])
+          one  three  four
+Ohio        0      2     3
+Colorado    4      6     7
+Utah        8     10    11
+New York   12     14    15
+>>> 
+>>> data.drop("two", axis=1)
+          one  three  four
+Ohio        0      2     3
+Colorado    4      6     7
+Utah        8     10    11
+New York   12     14    15
+>>> 
+>>> data.drop(["two","four"], axis="columns")
+          one  three
+Ohio        0      2
+Colorado    4      6
+Utah        8     10
+New York   12     14
+```
+

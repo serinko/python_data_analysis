@@ -1,4 +1,4 @@
-# PANDAS
+# PANDAS - Introduction to Series & DataFrame
 
 *As in NumPy, quotes use will be often coming from an interpreter. Tjose cam be recognized by input starting with >>> while output is displayed under, and without the > symbol. *
 

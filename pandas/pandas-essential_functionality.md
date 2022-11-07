@@ -72,6 +72,7 @@ c      4   NaN           5
 d      7   NaN           8
 ```
 
+**Reindex Function Arguments**
 
 
 | **Argument** | **Description** |

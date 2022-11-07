@@ -522,3 +522,21 @@ Unlike Python sets, a pandas Index can contain duplicate labels:
 Index(['foo', 'foo', 'bar', 'bar'], dtype='object')
 ```
 
+**Index methods and properties**
+
+| **Method/Property** | **Description** |
+| --- | --- |
+| `append()` | Concatenate with additional Index objects, producing a new Index |
+| `difference()` | Compute set difference as an Index |
+| `intersection()` | Compute set intersection |
+| `union()` | Compute set union |
+| `isin()` | Compute Boolean array indicating whether each value is contained in the passed collection |
+| `delete()` | Compute new Index with element at Index *i* deleted |
+| `drop()` | Compute new Index by deleting passed values |
+| `insert()` | Compute new Index by inserting element at Index *i* |
+| `is_monotonic` | Returns `True` if each element is greater than or equal to the previous element |
+| `is_unique` | Returns `True` if the Index has no duplicate values |
+| `unique()` | Compute the aray of unique values in the index |
+
+
+

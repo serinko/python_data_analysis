@@ -497,5 +497,28 @@ True
 >>> obj2.index == labels
 array([ True,  True,  True])
 ```
+An Index also behaves like a fixed-size set:
+```python
+>>> frame3
+state  nevada  ohio
+year               
+2001      2.4   1.7
+2002      2.9   3.6
+2000      NaN   1.5
+>>> 
+>>> frame3.columns
+Index(['nevada', 'ohio'], dtype='object', name='state')
+>>> 
+>>> "ohio" in frame3.columns
+True
+>>> 
+>>> 2003 in frame3.index
+False
+```
+Unlike Python sets, a pandas Index can contain duplicate labels:
 
+```python
+>>> pd.Index(["foo", "foo", "bar", "bar"])
+Index(['foo', 'foo', 'bar', 'bar'], dtype='object')
+```
 

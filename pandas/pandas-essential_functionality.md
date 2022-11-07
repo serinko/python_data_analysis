@@ -169,3 +169,93 @@ Utah        8     10
 New York   12     14
 ```
 
+## Indexing, Selection, and Filtering
+
+Series indexing (obj[...]) works analogously to NumPy array indexing, except you can use the Series’s index values instead of only integers. Here are some examples of this:
+
+```python
+>>> obj = pd.Series(np.arange(4.), index=["a", "b", "c", "d"])
+>>> obj
+a    0.0
+b    1.0
+c    2.0
+d    3.0
+dtype: float64
+>>> 
+>>> obj['b']
+1.0
+>>> obj[1]
+1.0
+>>> obj[2:4]
+c    2.0
+d    3.0
+dtype: float64
+>>> obj[["b","a","d"]]
+b    1.0
+a    0.0
+d    3.0
+dtype: float64
+>>> obj[[1,3]]
+b    1.0
+d    3.0
+dtype: float64
+>>> obj[obj < 2]
+a    0.0
+b    1.0
+dtype: float64
+```
+`loc` is preferable as it treats integers when indexing with `[ ]`. Regular indexing will treat them in that case as labels if the index contains integers, so the behaviour differs depending on the data type of the index.
+
+```python
+>>> obj1 = pd.Series([1, 2, 3], index=[2, 0, 1])
+>>> obj2 = pd.Series([1, 2, 3], index=["a", "b", "c"])
+>>> 
+>>> obj1
+2    1
+0    2
+1    3
+dtype: int64
+>>> 
+>>> obj2
+a    1
+b    2
+c    3
+dtype: int64
+>>> obj1[[0,1,2]]
+0    2
+1    3
+2    1
+dtype: int64
+>>> obj2[[0,1,2]]
+a    1
+b    2
+c    3
+dtype: int64
+>>> 
+>>># Using loc will fail if the index does not contain integers
+>>> 
+>>> obj2.loc[[0,1]]
+Traceback (most recent call last):
+  File "<stdin>", line 1, in <module>
+  ...
+  raise KeyError(f"None of [{key}] are in the [{axis_name}]")
+KeyError: "None of [Int64Index([0, 1], dtype='int64')] are in the [index]"
+```
+
+* `loc` operator indexes exclusively with labels
+* `iloc` operatorworks indexes exclusively with integers
+
+```python
+>>> obj1.iloc[[0,1,2]]
+2    1
+0    2
+1    3
+dtype: int64
+>>> obj2.iloc[[0,1,2]]
+a    1
+b    2
+c    3
+dtype: int64
+```
+
+

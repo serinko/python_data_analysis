@@ -745,10 +745,104 @@ In arithmetic operations between differently indexed objects is possible to fill
 | `mul`, `rmul`	| Methods for multiplication (*) |
 | `pow`, `rpow`	| Methods for exponentiation (**) |
 
+**Operations between DataFrame and Series**
 
+As with NumPy arrays of different dimensions, arithmetic between DataFrame and Series is also defined. 
 
+* A difference between a two-dimensional array and one of its rows:
 
+```python
+>>> arr = np.arange(12.).reshape((3, 4))
+>>> 
+>>> arr
+array([[ 0.,  1.,  2.,  3.],
+       [ 4.,  5.,  6.,  7.],
+       [ 8.,  9., 10., 11.]])
+>>> 
+>>> arr[0]
+array([0., 1., 2., 3.])
+>>> 
+>>> arr - arr[0]
+array([[0., 0., 0., 0.],
+       [4., 4., 4., 4.],
+       [8., 8., 8., 8.]])
+```
 
+Subtracting `arr[0]` from `arr` - the subtraction is performed once for each row. This is referred to as *broadcasting* and relates to general NumPy arrays.
 
+* Operations between a DataFrame and a Series are similar
 
+```python
+>>> frame = pd.DataFrame(np.arange(12.).reshape((4, 3)), columns=list("bde"),
+...     index=["Utah", "Ohio", "Texas", "Oregon"])
+>>> 
+>>> series = frame.iloc[0]
+>>> 
+>>> frame
+          b     d     e
+Utah    0.0   1.0   2.0
+Ohio    3.0   4.0   5.0
+Texas   6.0   7.0   8.0
+Oregon  9.0  10.0  11.0
+>>> 
+>>> series
+b    0.0
+d    1.0
+e    2.0
+Name: Utah, dtype: float64
+```
 
+* By default, arithmetic between DataFrame and Series matches the index of the Series on the columns of the DataFrame, broadcasting down the rows:
+
+```python
+>>> frame - series
+          b    d    e
+Utah    0.0  0.0  0.0
+Ohio    3.0  3.0  3.0
+Texas   6.0  6.0  6.0
+Oregon  9.0  9.0  9.0
+```
+
+* If an index value is not found in either the DataFrame’s columns or the Series’s index, the objects will be reindexed to form the union:
+
+```python
+>>> series2 = pd.Series(np.arange(3), index=["b", "e", "f"])
+>>> series2
+b    0
+e    1
+f    2
+dtype: int64
+>>> 
+>>> frame+series2
+          b   d     e   f
+Utah    0.0 NaN   3.0 NaN
+Ohio    3.0 NaN   6.0 NaN
+Texas   6.0 NaN   9.0 NaN
+Oregon  9.0 NaN  12.0 NaN
+```
+
+* It's possible to broadcast over the columns, matching on the rows - use one of the arithmetic methods and specify to match over the index:
+
+```python
+>>> series3 = frame["d"]
+>>> frame
+          b     d     e
+Utah    0.0   1.0   2.0
+Ohio    3.0   4.0   5.0
+Texas   6.0   7.0   8.0
+Oregon  9.0  10.0  11.0
+>>> series3
+Utah       1.0
+Ohio       4.0
+Texas      7.0
+Oregon    10.0
+Name: d, dtype: float64
+>>> frame.sub(series3, axis='index')
+          b    d    e
+Utah   -1.0  0.0  1.0
+Ohio   -1.0  0.0  1.0
+Texas  -1.0  0.0  1.0
+Oregon -1.0  0.0  1.0
+```
+
+The axis that passed is the axis to match on. In this case the match is on the DataFrame’s row index (axis="index") and broadcast across the columns.

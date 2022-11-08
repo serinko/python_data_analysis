@@ -471,3 +471,58 @@ There are many ways to select and rearrange the data in pandas object.
 | `df.iat[row, col]` | Select a single scalar value by row and column position (integers) |
 | `reindex` method | Select either rows or columns by labels |
 
+**Integer Indexing Pitfalls**
+
+In pandas, objects indexed with integers work differently from built-in Python data structures like lists and tuples. For example, see this error:
+
+```python
+>>> ser = pd.Series(np.arange(3.))
+>>> ser
+0    0.0
+1    1.0
+2    2.0
+dtype: float64
+>>> ser[-1]
+Traceback (most recent call last):
+...
+    return self._range.index(new_key)
+ValueError: -1 is not in range
+
+The above exception was the direct cause of the following exception:
+
+Traceback (most recent call last):
+...
+    raise KeyError(key) from err
+KeyError: -1
+```
+
+DataFrame `ser` has an index containing 0, 1, and 2, but pandas does not want to guess what the user wants (label-based indexing or position-based):
+
+* With a noninteger index, there is no such ambiguity:
+
+```python
+>>> ser2 = pd.Series(np.arange(3.), index=["a", "b", "c"])
+>>> ser2
+a    0.0
+b    1.0
+c    2.0
+dtype: float64
+>>> 
+>>> ser2[-1]
+2.0
+```
+
+* Slicing ith integers is always integer oriented:
+
+```python
+>>> ser2[:2]
+a    0.0
+b    1.0
+dtype: float64
+```
+
+Therefore it's preferable to always indexing with `loc` and `iloc` to avoid this ambiguity.
+
+
+
+

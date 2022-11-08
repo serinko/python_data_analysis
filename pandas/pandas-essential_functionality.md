@@ -349,4 +349,68 @@ Utah        8    9     10    11
 New York   12   13     14    15
 ```
 
+**Selection on DataFrame with loc and iloc**
+
+Like Series, DataFrame has special attributes `loc` and `iloc` for label-based and integer-based indexing, respectively. Since DataFrame is two-dimensional, you can select a subset of the rows and columns with NumPy-like notation using either axis labels (loc) or integers (iloc).
+
+* Select a single row by label:
+
+```python
+>>> data.loc["Colorado"]
+one      0
+two      5
+three    6
+four     7
+Name: Colorado, dtype: int64
+```
+
+Result of selecting a single row is a Series with index that contains the DataFrame's column lables.
+
+* Pass a sequence of labels to select multiple roles:
+
+```python
+>>> data.loc[["Colorado","New York"]]
+          one  two  three  four
+Colorado    0    5      6     7
+New York   12   13     14    15
+```
+
+* Combine row and column selection in `loc` by separating the selections with `,`:
+
+```python
+>>> data.loc["Colorado",["two","three"]]
+two      5
+three    6
+Name: Colorado, dtype: int64
+```
+
+* Perform with integers, using `iloc`, integers select indexes from axis 0:
+
+```python
+# single iloc index
+>>> data.iloc[2]
+one       8
+two       9
+three    10
+four     11
+Name: Utah, dtype: int64
+
+# two integers
+>>> data.iloc[[2,1]]
+          one  two  three  four
+Utah        8    9     10    11
+Colorado    0    5      6     7
+
+# comma separated lists of indexes [[axis 0],[axis 1]]
+>>> data.iloc[2, [3, 0, 1]]
+four    11
+one      8
+two      9
+Name: Utah, dtype: int64
+>>> data.iloc[[1, 2], [3, 0, 1]]
+          four  one  two
+Colorado     7    0    5
+Utah        11    8    9
+```
+
 

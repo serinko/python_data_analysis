@@ -845,4 +845,4 @@ Texas  -1.0  0.0  1.0
 Oregon -1.0  0.0  1.0
 ```
 
-The axis that passed is the axis to match on. In this case the match is on the DataFrame’s row index (axis="index") and broadcast across the columns.
+The axis passed is the axis to match on. In this case the match is on the DataFrame’s row index (axis="index") and broadcast across the columns.

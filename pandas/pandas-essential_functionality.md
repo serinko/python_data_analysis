@@ -665,6 +665,89 @@ Since the *c* and *e* columns are not found in both DataFrame objects, they appe
 1 NaN NaN
 ```
 
+**Arithmetic Methods with Fill Values**
+
+In arithmetic operations between differently indexed objects is possible to fill with a special value, like 0, when an axis label is found in one object but not the other. 
+
+* Setting a particular value to NA (null) by assigning np.nan to it:
+
+```python
+>>> df1 = pd.DataFrame(np.arange(12.).reshape((3, 4)), columns=list("abcd"))
+>>> df2 = pd.DataFrame(np.arange(20.).reshape((4, 5)), columns=list("abcde"))
+>>> 
+>>> df2.loc[1,"b"] = np.nan
+>>> 
+>>> df1
+     a    b     c     d
+0  0.0  1.0   2.0   3.0
+1  4.0  5.0   6.0   7.0
+2  8.0  9.0  10.0  11.0
+>>> 
+>>> df2
+      a     b     c     d     e
+0   0.0   1.0   2.0   3.0   4.0
+1   5.0   NaN   7.0   8.0   9.0
+2  10.0  11.0  12.0  13.0  14.0
+3  15.0  16.0  17.0  18.0  19.0
+>>> 
+>>> df1 + df2
+      a     b     c     d   e
+0   0.0   2.0   4.0   6.0 NaN
+1   9.0   NaN  13.0  15.0 NaN
+2  18.0  20.0  22.0  24.0 NaN
+3   NaN   NaN   NaN   NaN NaN
+```
+
+* `add` method on *df1*, passing *df2* and an argument to `fill_value` which substitutes the passed value to any missing values:
+
+```python
+>>> df1.add(df2, fill_value=0)
+      a     b     c     d     e
+0   0.0   2.0   4.0   6.0   4.0
+1   9.0   5.0  13.0  15.0   9.0
+2  18.0  20.0  22.0  24.0  14.0
+3  15.0  16.0  17.0  18.0  19.0
+```
+
+* each method has a counterpart starting with `r`,  that has arguments reversed. ie following statements are equivalent:
+
+```python
+>>> 1 / df1
+       a         b         c         d
+0    inf  1.000000  0.500000  0.333333
+1  0.250  0.200000  0.166667  0.142857
+2  0.125  0.111111  0.100000  0.090909
+>>> df1.rdiv(1)
+       a         b         c         d
+0    inf  1.000000  0.500000  0.333333
+1  0.250  0.200000  0.166667  0.142857
+2  0.125  0.111111  0.100000  0.090909
+```
+
+* Possible to specify a different fill value, when reindexing a Series or DataFrame:
+
+```python
+>>> df1.reindex(columns=df2.columns, fill_value=0)
+     a    b     c     d  e
+0  0.0  1.0   2.0   3.0  0
+1  4.0  5.0   6.0   7.0  0
+2  8.0  9.0  10.0  11.0  0
+```
+
+**Flexible Arithmetic Methods**
+
+| **Method** | **Description** |
+| --- | --- |
+| `add`, `radd`	| Methods for addition (+) |
+| `sub`, `rsub`	| Methods for subtraction (-) |
+| `div`, `rdiv`	| Methods for division (/) |
+| `floordiv`, `rfloordiv` |	Methods for floor division (//) |
+| `mul`, `rmul`	| Methods for multiplication (*) |
+| `pow`, `rpow`	| Methods for exponentiation (**) |
+
+
+
+
 
 
 

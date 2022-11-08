@@ -523,6 +523,50 @@ dtype: float64
 
 Therefore it's preferable to always indexing with `loc` and `iloc` to avoid this ambiguity.
 
+**Pitfalls with Chained Indexing**
 
+The indexing attributes `loc` & `iloc` can be used to modify DataFrame objects in place, but doing so requires some care.
+
+* Assigning to a column or row by label or integer position, using the example DataFrame above:
+
+```python
+>>> data.loc[:,"one"] = 1
+>>> data
+          one  two  three  four
+Ohio        1    0      0     0
+Colorado    1    5      6     7
+Utah        1    9     10    11
+New York    1   13     14    15
+>>> 
+>>> data.iloc[2] = 5
+>>> data
+          one  two  three  four
+Ohio        1    0      0     0
+Colorado    1    5      6     7
+Utah        5    5      5     5
+New York    1   13     14    15
+>>> 
+>>> data.loc[data["four"] > 5] = 3
+>>> data
+          one  two  three  four
+Ohio        1    0      0     0
+Colorado    3    3      3     3
+Utah        5    5      5     5
+New York    3    3      3     3
+
+```
+
+* Another possibility with a single `loc` assignment:
+
+```python
+>>> data.loc[data.three == 5, "three"] = 6
+>>> data
+          one  two  three  four
+Ohio        1    0      0     0
+Colorado    3    3      3     3
+Utah        5    5      6     5
+New York    3    3      3     3
+```
+A good rule of thumb is to avoid chained indexing when doing assignments. Aways good to check more in pandas documentation. 
 
 

@@ -413,4 +413,61 @@ Colorado     7    0    5
 Utah        11    8    9
 ```
 
+* `loc` & `iloc` work with slices as well:
+
+```python
+>>> data
+          one  two  three  four
+Ohio        0    0      0     0
+Colorado    0    5      6     7
+Utah        8    9     10    11
+New York   12   13     14    15
+>>> 
+>>> 
+>>> data.loc[:"Utah", "two"]
+Ohio        0
+Colorado    5
+Utah        9
+Name: two, dtype: int64
+>>> 
+>>> data.iloc[:,:3]
+          one  two  three
+Ohio        0    0      0
+Colorado    0    5      6
+Utah        8    9     10
+New York   12   13     14
+>>> 
+>>> data.iloc[:,:3][data.three > 5]
+          one  two  three
+Colorado    0    5      6
+Utah        8    9     10
+New York   12   13     14
+```
+
+* Boolean arrays can be used with `loc` but not `iloc`:
+
+```python
+>>> data.loc[data.three >= 2]
+          one  two  three  four
+Colorado    0    5      6     7
+Utah        8    9     10    11
+New York   12   13     14    15
+```
+
+There are many ways to select and rearrange the data in pandas object.
+
+**Indexing Options with DataFrame**
+
+| **Type** | **Notes** |
+| --- | --- |
+| `df[column]` | Select single column or sequence of columns from the DataFrame; special case conveniences: Boolean array (filter rows), slice (slice rows), or Boolean DataFrame (set values based on some criterion) |
+| `df.loc[rows]` | Select single row or subset of rows from the DataFrame by label |
+| `df.loc[:, cols]` | Select single column or subset of columns by label |
+| `df.loc[rows, cols]` | Select both row(s) and column(s) by label |
+| `df.iloc[rows]` | Select single row or subset of rows from the DataFrame by integer position |
+| `df.iloc[:, cols]` | Select single column or subset of columns by integer position |
+| `df.iloc[rows, cols]` | Select both row(s) and column(s) by integer position |
+| `df.at[row, col]`	| Select a single scalar value by row and column label |
+| `df.iat[row, col]` | Select a single scalar value by row and column position (integers) |
+| `reindex` method | Select either rows or columns by labels |
 

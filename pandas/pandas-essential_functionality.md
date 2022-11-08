@@ -569,4 +569,103 @@ New York    3    3      3     3
 ```
 A good rule of thumb is to avoid chained indexing when doing assignments. Aways good to check more in pandas documentation. 
 
+**Arithmetic and Data Alignment**
+
+pandas can make it simpler to work with objects that have different indexes. For example, when you add objects, if any index pairs are not the same, the respective index in the result will be the union of the index pairs.
+
+```python
+>>> s1 = pd.Series([7.3, -2.5, 3.4, 1.5], index=["a", "c", "d", "e"])
+>>> s2 = pd.Series([-2.1, 3.6, -1.5, 4, 3.1],
+...     index=["a", "c", "e", "f", "g"])
+>>> 
+>>> s1
+a    7.3
+c   -2.5
+d    3.4
+e    1.5
+dtype: float64
+>>> 
+>>> s2
+a   -2.1
+c    3.6
+e   -1.5
+f    4.0
+g    3.1
+dtype: float64
+>>> 
+>>> s1 + s2
+a    5.2
+c    1.1
+d    NaN
+e    0.0
+f    NaN
+g    NaN
+dtype: float64
+```
+
+The internal data alignment introduces missing values in the label locations that don’t overlap. Missing values will then propagate in further arithmetic computations.
+
+In the case of DataFrame, alignment is performed on both rows and columns:
+
+```python
+>>> df1 = pd.DataFrame(np.arange(9.).reshape((3, 3)), columns=list("bcd"),
+...     index=["Ohio","Texas","Colorado"]
+... )
+>>> 
+>>> df2 = pd.DataFrame(np.arange(12.).reshape((4, 3)), columns=list("bde"),
+...     index=["Utah", "Ohio", "Texas", "Oregon"]
+... )
+>>> 
+>>> df1
+            b    c    d
+Ohio      0.0  1.0  2.0
+Texas     3.0  4.0  5.0
+Colorado  6.0  7.0  8.0
+>>> 
+>>> df2
+          b     d     e
+Utah    0.0   1.0   2.0
+Ohio    3.0   4.0   5.0
+Texas   6.0   7.0   8.0
+Oregon  9.0  10.0  11.0
+```
+Adding these returns a DataFrame with index and columns that are the unions of the ones in each DataFrame
+
+```python
+>>> df1 + df2
+            b   c     d   e
+Colorado  NaN NaN   NaN NaN
+Ohio      3.0 NaN   6.0 NaN
+Oregon    NaN NaN   NaN NaN
+Texas     9.0 NaN  12.0 NaN
+Utah      NaN NaN   NaN NaN
+```
+
+Since the *c* and *e* columns are not found in both DataFrame objects, they appear as NaN in the result. The same holds for the rows with labels that are not common to both objects.
+
+* If a DataFrame objects with no column or row labels in common added, the result will contain all nulls:
+
+```python
+>>> df1 = pd.DataFrame({"A": [1, 2]})
+>>> df2 = pd.DataFrame({"B": [3, 4]})
+>>> 
+>>> df1
+   A
+0  1
+1  2
+>>> 
+>>> df2
+   B
+0  3
+1  4
+>>> 
+>>> df1 + df2
+    A   B
+0 NaN NaN
+1 NaN NaN
+```
+
+
+
+
 

@@ -243,7 +243,7 @@ KeyError: "None of [Int64Index([0, 1], dtype='int64')] are in the [index]"
 ```
 
 * `loc` operator indexes exclusively with labels
-* `iloc` operatorworks indexes exclusively with integers
+* `iloc` operator indexes exclusively with integers
 
 ```python
 >>> obj1.iloc[[0,1,2]]
@@ -324,7 +324,7 @@ Colorado    4    5      6     7
 Utah        8    9     10    11
 New York   12   13     14    15
 ```
-The row selection syntax data[:2] is provided as a convenience. Passing a single element or a list to the [] operator selects columns.
+The row selection syntax `data[:2]` is provided as a convenience. Passing a single element or a list to the `[]` operator selects columns.
 
 2. Indexing with a Boolean DataFrame, such as one produced by a scalar comparison
 

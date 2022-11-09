@@ -942,6 +942,217 @@ Name: e, dtype: object
 '2.09'
 ```
 
+**Sorting and Ranking**
 
+Sorting a dataset by some criterion is another important built-in operation. To sort lexicographically by `row` or `column` label, use the `sort_index` method, which returns a new, sorted object:
 
+```python
+>>> obj = pd.Series(np.arange(4), index=["d", "a", "b", "c"])
+>>> obj
+d    0
+a    1
+b    2
+c    3
+dtype: int64
+>>> obj.sort_index()
+a    1
+b    2
+c    3
+d    0
+dtype: int64
+```
+
+* DataFrame can sort by index on either axis:
+
+```python
+>>> frame = pd.DataFrame(np.arange(8).reshape((2, 4)),
+...     index=["three", "one"], columns=["d", "a", "b", "c"])
+>>> 
+>>> frame
+       d  a  b  c
+three  0  1  2  3
+one    4  5  6  7
+>>> 
+>>> frame.sort_index()
+       d  a  b  c
+one    4  5  6  7
+three  0  1  2  3
+>>>
+>>> frame.sort_index(axis='columns')
+       a  b  c  d
+three  1  2  3  0
+one    5  6  7  4
+```
+
+* The data can also be stored by descending order (default is ascending):
+
+```python
+>>> frame.sort_index(axis="columns", ascending=False)
+       d  c  b  a
+three  0  3  2  1
+one    4  7  6  5
+
+```
+
+* To sort a Series by its values, use `sort_values` method:
+
+```python
+>>> obj = pd.Series([4, 7, -3, 2])
+>>> obj.sort_values()
+2   -3
+3    2
+0    4
+1    7
+```
+
+* Any missing values are sorted to the end of the Series by default:
+
+```python
+>>> obj = pd.Series([4, np.nan, 7, np.nan, -3, 2])
+>>> obj.sort_values()
+4   -3.0
+5    2.0
+0    4.0
+2    7.0
+1    NaN
+3    NaN
+dtype: float64
+```
+
+* Missing values can be sorted to the start instead by using the `na_position` option:
+
+```python
+>>> obj.sort_values(na_position="first")
+1    NaN
+3    NaN
+4   -3.0
+5    2.0
+0    4.0
+2    7.0
+dtype: float64
+```
+
+* In the case of DataFrame, the data in one or more columns can be passed as the sort keys. Pass one or more column names to `sort_values`:
+
+```python
+>>> frame = pd.DataFrame({"b": [4, 7, -3, 2], "a": [0, 1, 0, 1]})
+>>> 
+>>> frame
+   b  a
+0  4  0
+1  7  1
+2 -3  0
+3  2  1
+>>> frame.sort_values("b")
+   b  a
+2 -3  0
+3  2  1
+0  4  0
+1  7  1
+>>> frame.sort_values(["a","b"])
+   b  a
+2 -3  0
+0  4  0
+3  2  1
+1  7  1
+```
+***Ranking*** assigns ranks from one through the number of valid data points in an array, starting from the lowest value. The rank methods for Series and DataFrame are the place to look; by default, `rank` breaks ties by assigning each group the mean rank:
+```python
+>>> obj = pd.Series([7, -5, 7, 4, 2, 0, 4])
+>>> obj.rank()
+0    6.5
+1    1.0
+2    6.5
+3    4.5
+4    3.0
+5    2.0
+6    4.5
+dtype: float64
+>>>
+>>> obj1 = pd.Series([10,20,13,18,50,5])
+>>> obj1.rank()
+0    2.0
+1    5.0
+2    3.0
+3    4.0
+4    6.0
+5    1.0
+dtype: float64
+```
+
+* Ranks can also be assigned according to the order in which they’re observed in the data. That means that if two values would be on the same rank, instead of breaking ties, the *first one* observed gets the rank asigned first:
+
+```python
+
+# Here, instead of using the average rank 6.5 for the entries 0 and 2, 
+# they instead have been set to 6 and 7 because 
+# label 0 precedes label 2 in the data
+>>> obj.rank(method="first")
+0    6.0
+1    1.0
+2    7.0
+3    4.0
+4    3.0
+5    2.0
+6    5.0
+dtype: float64
+```
+
+* Rank in dscending order:
+
+```python
+>>> obj.rank(ascending=False)
+0    1.5
+1    7.0
+2    1.5
+3    3.5
+4    5.0
+5    6.0
+6    3.5
+dtype: float64
+>>> obj1.rank(ascending=False)
+0    5.0
+1    2.0
+2    4.0
+3    3.0
+4    1.0
+5    6.0
+dtype: float64
+```
+
+* DataFrame can compute ranks over the rows or the columns:
+
+```python
+>>> frame = pd.DataFrame({"b": [4.3, 7, -3, 2], "a": [0, 1, 0, 1],
+...     "c": [-2, 5, 8, -2.5]})
+>>> frame
+     b  a    c
+0  4.3  0 -2.0
+1  7.0  1  5.0
+2 -3.0  0  8.0
+3  2.0  1 -2.5
+>>> 
+>>> frame.rank()
+     b    a    c
+0  3.0  1.5  2.0
+1  4.0  3.5  3.0
+2  1.0  1.5  4.0
+3  2.0  3.5  1.0
+>>> frame.rank(axis="columns")
+     b    a    c
+0  3.0  2.0  1.0
+1  3.0  1.0  2.0
+2  1.0  2.0  3.0
+3  3.0  2.0  1.0
+```
+
+**Tie-Breaking Methods with `rank`**
+
+| Method | Description |
+| --- | --- |
+| `average`	| Default: assign the average rank to each entry in the equal group |
+| `min`	| Use the minimum rank for the whole group |
+| `max` | Use the maximum rank for the whole group |
+| `first` | Assign ranks in the order the values appear in the data |
+| `dense` | Like `method="min"`, but ranks always increase by 1 between groups rather than the number of equal elements in a group |
 

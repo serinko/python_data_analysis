@@ -895,7 +895,44 @@ Texas     1.059355
 Oregon    0.241006
 dtype: float64
 ```
+Many of the most common array statistics (like `sum` and `mean`) are DataFrame methods, so using `apply` is not necessary.
 
+* The function passed to `apply` need not return a scalar value; it can also return a Series with multiple values:
+
+```python
+>>> def f2(x):
+...     return pd.Series([x.min(), x.max()], index=["min", "max"])
+... 
+>>> frame.apply(f2)
+            b         d         e
+min -0.776571 -2.524847  0.127677
+max  0.964615  0.974784  2.300653
+
+```
+Element-wise Python functions can be used, too. Ie to compute a formatted string from each floating-point value in frame. Use `applymap`:
+
+```python
+>>> def my_format(x):
+...     return f"{x:.2f}"
+... 
+>>> frame.applymap(my_format)
+            b      d     e
+Utah    -0.19  -2.52  0.49
+Ohio     0.39   0.63  2.30
+Texas   -0.78   0.28  0.13
+Oregon   0.96   0.97  1.21
+```
+
+* The name applymap is because Series has a map method for applying an element-wise function:
+
+```python
+>>> frame["e"].map(my_format)
+Utah      0.49
+Ohio      2.30
+Texas     0.13
+Oregon    1.21
+Name: e, dtype: object
+```
 
 
 

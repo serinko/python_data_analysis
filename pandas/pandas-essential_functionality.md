@@ -846,3 +846,48 @@ Oregon -1.0  0.0  1.0
 ```
 
 The axis passed is the axis to match on. In this case the match is on the DataFrame’s row index (axis="index") and broadcast across the columns.
+
+
+**Function Application and Mapping**
+
+NumPy ufuncs (element-wise array methods) also work with pandas objects
+
+```python
+>>> frame = pd.DataFrame(np.random.standard_normal((4, 3)),
+...     columns=list("bde"), index=["Utah", "Ohio", "Texas", "Oregon"])
+>>> frame
+               b         d         e
+Utah   -0.194371 -2.524847  0.487050
+Ohio    0.392791  0.630667  2.300653
+Texas  -0.776571  0.282784  0.127677
+Oregon  0.964615  0.974784  1.205621
+>>> 
+>>> np.abs(frame)
+               b         d         e
+Utah    0.194371  2.524847  0.487050
+Ohio    0.392791  0.630667  2.300653
+Texas   0.776571  0.282784  0.127677
+Oregon  0.964615  0.974784  1.205621
+```
+
+* A frequent operation is applying a function on one-dimensional arrays to each column or row. DataFrame’s apply method does exactly this:
+
+```python
+>>> def f1(x):
+...     return x.max() - x.min()
+... 
+>>> frame.apply(f1)
+b    1.741186
+d    3.499632
+e    2.172976
+dtype: float64
+```
+
+The function `f`, which computes the difference between the maximum and minimum of a Series, is invoked once on each column in `frame`. The result is a Series having the columns of frame as its index.
+
+If passed `axis="columns"` to apply, the function will be invoked once per row instead. A helpful way to think about this is as “apply across the columns”.
+
+
+
+
+

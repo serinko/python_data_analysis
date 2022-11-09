@@ -887,6 +887,15 @@ The function `f`, which computes the difference between the maximum and minimum 
 
 If passed `axis="columns"` to apply, the function will be invoked once per row instead. A helpful way to think about this is as “apply across the columns”.
 
+```python
+>>> frame.apply(f1, axis="columns")
+Utah      3.011897
+Ohio      1.907862
+Texas     1.059355
+Oregon    0.241006
+dtype: float64
+```
+
 
 
 

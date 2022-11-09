@@ -933,6 +933,14 @@ Texas     0.13
 Oregon    1.21
 Name: e, dtype: object
 ```
+* Formating float into a string with 2 decimals:
+
+```python
+>>> x = 2.0923
+>>> a = f"{x:.2f}"
+>>> a
+'2.09'
+```
 
 
 

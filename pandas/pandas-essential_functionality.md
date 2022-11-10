@@ -1156,3 +1156,69 @@ dtype: float64
 | `first` | Assign ranks in the order the values appear in the data |
 | `dense` | Like `method="min"`, but ranks always increase by 1 between groups rather than the number of equal elements in a group |
 
+
+**Axis Indexes with Duplicate Labels**
+
+Most of the examples have unique axis labels (index values). While many pandas functions (like `reindex`) require that the labels be unique, it’s not mandatory. 
+
+* A Series can be with duplicate indices:
+
+```python
+>>> obj = pd.Series(np.arange(5), index=["a", "a", "b", "b", "c"])
+>>> obj
+a    0
+a    1
+b    2
+b    3
+c    4
+dtype: int64
+
+```
+
+* The `is_unique` property of the index can tell you whether or not its labels are unique:
+
+```python
+>>> obj.index.is_unique
+False
+```
+
+Data selection is one of the main things that behaves differently with duplicates. 
+
+* Indexing a label with multiple entries returns a Series, while single entries return a scalar value:
+
+```python
+>>> obj["a"]
+a    0
+a    1
+dtype: int64
+>>> obj["c"]
+4
+```
+
+This can make the code more complicated, as the output type from indexing can vary based on whether or not a label is repeated.
+
+* The same logic extends to indexing rows (or columns) in a DataFrame:
+
+```python
+>>> df = pd.DataFrame(np.random.standard_normal((5, 3)),
+...     index=["a", "a", "b", "b", "c"])
+>>> df
+          0         1         2
+a -0.972621  0.798059 -0.602824
+a  0.514842 -1.084893  2.054103
+b -0.146128 -0.232548 -0.358311
+b -0.433336 -0.310828 -0.201750
+c  0.048224 -2.654888  1.073938
+>>> df.loc["b"]
+          0         1         2
+b -0.146128 -0.232548 -0.358311
+b -0.433336 -0.310828 -0.201750
+>>> df.loc["c"]
+0    0.048224
+1   -2.654888
+2    1.073938
+Name: c, dtype: float64
+```
+
+
+

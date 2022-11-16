@@ -157,6 +157,84 @@ dtype: object
 | `diff` | Compute first arithmetic difference (useful for time series) |
 | `pct_change` | Compute percent changes |
 
+## Correlation and Covariance
+
+Some summary statistics, like correlation and covariance, are computed from pairs of arguments.
+
+```python
+>>> price = pd.read_pickle("../../tmp/pydata-book/examples/yahoo_price.pkl")
+>>> volume = pd.read_pickle("../../tmp/pydata-book/examples/yahoo_volume.pkl")
+```
+* Compute percent changes of the prices, show the *tail*:
+
+```python
+>>> returns = price.pct_change()
+>>> returns.tail()
+                AAPL      GOOG       IBM      MSFT
+Date                                              
+2016-10-17 -0.000680  0.001837  0.002072 -0.003483
+2016-10-18 -0.000681  0.019616 -0.026168  0.007690
+2016-10-19 -0.002979  0.007846  0.003583 -0.002255
+2016-10-20 -0.000512 -0.005652  0.001719 -0.004867
+2016-10-21 -0.003930  0.003011 -0.012474  0.042096
+```
+
+* The `corr` method of Series computes the correlation of the overlapping, non-NA, aligned-by-index values in two Series. Relatedly, `cov` computes the covariance:
+
+```python
+>>> returns["MSFT"].corr(returns["IBM"])
+0.49976361144151144
+>>> 
+>>> returns["MSFT"].cov(returns["IBM"])
+8.870655479703546e-05
+```
+
+* DataFrame’s `corr` and `cov` methods, on the other hand, return a full correlation or covariance matrix as a DataFrame, respectively:
+
+```python
+>>> returns.corr()
+          AAPL      GOOG       IBM      MSFT
+AAPL  1.000000  0.407919  0.386817  0.389695
+GOOG  0.407919  1.000000  0.405099  0.465919
+IBM   0.386817  0.405099  1.000000  0.499764
+MSFT  0.389695  0.465919  0.499764  1.000000
+
+>>> returns.cov()
+          AAPL      GOOG       IBM      MSFT
+AAPL  0.000277  0.000107  0.000078  0.000095
+GOOG  0.000107  0.000251  0.000078  0.000108
+IBM   0.000078  0.000078  0.000146  0.000089
+MSFT  0.000095  0.000108  0.000089  0.000215
+
+```
+
+* DataFrame’s `corrwith` method computes pair-wise correlations between a DataFrame’s columns or rows with another Series or DataFrame. Passing a Series returns a Series with the correlation value computed for each column:
+
+```python
+>>> returns.corrwith(returns["IBM"])
+AAPL    0.386817
+GOOG    0.405099
+IBM     1.000000
+MSFT    0.499764
+```
+
+* Passing a DataFrame computes the correlations of matching column names. Ie correlations of % changes with volume. 
+
+```python
+>>> returns.corrwith(volume)
+AAPL   -0.075565
+GOOG   -0.007067
+IBM    -0.204849
+MSFT   -0.092950
+dtype: float64
+```
+
+Passing axis="columns" does it row-by-row. In all cases, the data points are aligned by label before the correlation is computed.
+
+
+
+
+
 
 
 

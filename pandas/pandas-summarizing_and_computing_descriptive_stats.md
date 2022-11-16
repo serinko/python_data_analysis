@@ -231,12 +231,160 @@ dtype: float64
 
 Passing axis="columns" does it row-by-row. In all cases, the data points are aligned by label before the correlation is computed.
 
+## Unique Values, Value Counts, and Membership
 
+A class of related methods extract information about the values in a one-dimentional Series
 
+* `unique` returns an array of the unique values in a Series:
 
+```python 
+>>> obj = pd.Series(["c", "a", "d", "a", "a", "b", "b", "c", "c"])
+>>> 
+>>> uniques = obj.unique()
+>>> uniques
+array(['c', 'a', 'd', 'b'], dtype=object)
 
+```
+The unique values are not always returned in order they first appeared, neither sorted.
 
+* Can be sorted with `sort()`. `value_counts` computes a SEries containing value frequencies.
 
+```python
+>>> uniques.sort()
+>>> uniques
+array(['a', 'b', 'c', 'd'], dtype=object)
+>>> obj.value_counts()
+c    3
+a    3
+b    2
+d    1
+dtype: int64
+```
 
+The Series is sorted by value in descending order as a convenience. 
+
+* `value_counts` is also available as a top level pandas method that can be used with NumPy arrays or other Python squences:
+
+```python
+>>> pd.value_counts(obj.to_numpy(), sort=False)
+c    3
+a    3
+d    1
+b    2
+dtype: int64
+```
+
+* `isin` performs a vectorized set membership check and can be useful in filtering a dataset down to a subset of values in a Series or column in a DataFrame:
+
+```python
+>>> obj
+0    c
+1    a
+2    d
+3    a
+4    a
+5    b
+6    b
+7    c
+8    c
+dtype: object
+>>> 
+>>> mask = obj.isin(["b", "c"])
+>>> 
+>>> mask
+0     True
+1    False
+2    False
+3    False
+4    False
+5     True
+6     True
+7     True
+8     True
+dtype: bool
+>>> 
+>>> obj[mask]
+0    c
+5    b
+6    b
+7    c
+8    c
+dtype: object
+
+```
+
+Related to `isin` is the Index.`get_indexer()` method, returns an index array from an array of possibly nondistinct values into another array of distinct values:
+
+```python
+>>> to_match = pd.Series(["c", "a", "b", "b", "c", "a"])
+>>> unique_vals = pd.Series(["c", "b", "a"])
+>>> indices = pd.Index(unique_vals).get_indexer(to_match)
+>>> indices
+array([0, 2, 1, 1, 0, 2])
+```
+
+**Unique, value counts, and set membership methods**
+
+| **Method** | **Description** |
+| --- | --- |
+| `isin` | Compute a Boolean array indicating whether each Series or DataFrame value is contained in the passed sequence of values |
+| `get_indexer` | Compute integer indices for each value in an array into another array of distinct values; helpful for data alignment and join-type operations |
+| `unique` | Compute an array of unique values in a Series, returned in the order observed |
+| `value_counts` | Return a Series containing unique values as its index and frequencies as its values, ordered count in descending order |
+
+* Example of computing histogram on multiple related columns in a DataFrame:
+
+```python
+>>> data = pd.DataFrame({"Qu1": [1, 3, 4, 3, 4],
+...     "Qu2": [2, 3, 1, 2, 3],
+...     "Qu3": [1, 5, 2, 4, 4]})
+>>> data
+   Qu1  Qu2  Qu3
+0    1    2    1
+1    3    3    5
+2    4    1    2
+3    3    2    4
+4    4    3    4
+
+# Compute the value counts for a single column
+>>> data["Qu1"].value_counts().sort_index()
+1    1
+3    2
+4    2
+Name: Qu1, dtype: int64
+
+# Compute for all columns, pass pandas.value_counts to the DataFrame apply method
+>>> result = data.apply(pd.value_counts).fillna(0)
+>>> result
+   Qu1  Qu2  Qu3
+1  1.0  1.0  1.0
+2  0.0  2.0  1.0
+3  2.0  2.0  0.0
+4  2.0  0.0  2.0
+5  0.0  0.0  1.0
+```
+
+The row labels in the result are the distinct values occurring in all of the columns. The values are the respective counts of these values in each column.
+
+* DataFrame.value_counts method computes counts considering each row of the DataFrame as a tuple to determine the number of occurences of each distinct row.
+
+```python
+>>> data = pd.DataFrame({"a": [1, 1, 1, 2, 2], "b": [0, 0, 1, 0, 0]})
+>>> data
+   a  b
+0  1  0
+1  1  0
+2  1  1
+3  2  0
+4  2  0
+>>> 
+>>> data.value_counts()
+a  b
+1  0    2
+2  0    2
+1  1    1
+dtype: int64
+```
+The result has an index representing the distinct rows as a hierarchical index.
 
 

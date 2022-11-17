@@ -1,3 +1,13 @@
+# Data Loading
+
+* ***Parsing*** - a term used to describe loading text data and interpreting it as tables and different data types.
+* Input and output typically fall into a few main categories: 
+    - reading text files and other more efficient on-disk formats
+    - loading data from databases
+    - interacting with network sources like web APIs
+
+## Reading and Writing Data in Text Format
+
 **Text and binary data loading functions in pandas**
 
 | **Function** | **Description** |
@@ -19,3 +29,5 @@
 | `read_sql_table` | Eead a whole SQL table (using SQLAlchemy); equivalent to using a query that selects everything in that table using read_sql |
 | `read_stata` | Read a dataset from Stata file format |
 | `read_xml` | Read a table of data from an XML file |
+
+

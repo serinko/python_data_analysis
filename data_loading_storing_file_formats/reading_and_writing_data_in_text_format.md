@@ -30,4 +30,13 @@
 | `read_stata` | Read a dataset from Stata file format |
 | `read_xml` | Read a table of data from an XML file |
 
+**Mechanics of the Functions**
 
+* Indexing - treating columns as the returned DataFrame, whether to get column names from the file
+* Type inference and data conversion - Includes the user-defined value conversions and custom list of missing value markers
+* Date and time parsing - Includes a combining capability, including combining date and time information spread over multiple columns into a single column in the result.
+* Iterating - Support for iterating over chunks of very large files.
+* Unclean data issues - Includes skipping rows or a footer, comments, or other minor things like numeric data with thousands separated by commas.
+  
+To deal with the chaotic nature of the data in the world, loading functions (like `pandas.load_csv`) have many optional arguments.
+It can be overwhelming and not nessesary to learn them all, always can look into pandas documentation for examples. 

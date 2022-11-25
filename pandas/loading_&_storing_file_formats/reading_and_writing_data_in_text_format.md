@@ -39,4 +39,4 @@
 * Unclean data issues - Includes skipping rows or a footer, comments, or other minor things like numeric data with thousands separated by commas.
   
 To deal with the chaotic nature of the data in the world, loading functions (like `pandas.load_csv`) have many optional arguments.
-It can be overwhelming and not nessesary to learn them all, always can look into pandas documentation for examples. 
+It can be overwhelming and not nessesary to learn them all, always can look into pandas documentation for examples.

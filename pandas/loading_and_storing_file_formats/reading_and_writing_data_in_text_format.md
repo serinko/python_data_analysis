@@ -128,4 +128,125 @@ two  a          9      10
      c         13      14
      d         15      16
 ```
+* Not all cases do have a fixwd delimeter, using whitespace or some other pattern to separate fields:
+```bash
+> cat ex3.txt
+A         B         C
+aaa -0.264438 -1.026059 -0.619500
+bbb  0.927272  0.302904 -0.032399
+ccc -0.264273 -0.386314 -0.217601
+ddd -0.871858 -0.348382  1.100491
+```
+* Possible to fix manualy. The fields in the example are separated by a variable amount of whitespace. A regular expression can be passed, as a delimiter for `pandas.read_csv` - let's use `\s+`:
+
+```python
+>>> result = pd.read_csv("ex3.txt",sep="\s+")
+>>> result
+            A         B         C
+aaa -0.264438 -1.026059 -0.619500
+bbb  0.927272  0.302904 -0.032399
+ccc -0.264273 -0.386314 -0.217601
+ddd -0.871858 -0.348382  1.100491
+```
+
+In ex3.txt is one fewer column names than the number of data rows, `pandas.read_csv` inferst that the first column should be DF's index in this special case.
+
+* Parsing functions have many additional arguments to handle the exceptions. For example skipping rows with `skiprows` argument:
+
+```bash
+> cat ex4.csv
+# hey!
+a,b,c,d,message
+# just wanted to make things more difficult for you
+# who reads CSV files with computers, anyway?
+1,2,3,4,hello
+5,6,7,8,world
+9,10,11,12,foo
+```
+
+```python
+>>> pd.read_csv("ex4.csv", skiprows=[0,2,3])
+   a   b   c   d message
+0  1   2   3   4   hello
+1  5   6   7   8   world
+2  9  10  11  12     foo
+```
+Handling missing values is an important and frequently nuanced part of the file reading process. Missing data is usually either not present (empty string) or marked by some *sentinel* (placeholder) value. By default pandas uses a set of occuring sentinels: `NA` and `NULL`
+
+```bash
+> cat ex5.csv
+something,a,b,c,d,message
+one,1,2,3,4,NA
+two,5,6,,8,world
+three,9,10,11,12,foo%
+```
+
+```python
+>>> result = pd.read_csv("ex5.csv")
+>>> result
+  something  a   b     c   d message
+0       one  1   2   3.0   4     NaN
+1       two  5   6   NaN   8   world
+2     three  9  10  11.0  12     foo
+```
+
+* Can be checked with pandas missing values
+
+```python
+>>> pd.isna(result)
+   something      a      b      c      d  message
+0      False  False  False  False  False     True
+1      False  False  False   True  False    False
+2      False  False  False  False  False    False
+```
+
+* The `na_values` option accepts a sequence of strings to add to the default list of strings recognized as missing.
+
+```python
+>>> result = pd.read_csv("ex5.csv", na_values=["NULL"])
+>>> result
+  something  a   b     c   d message
+0       one  1   2   3.0   4     NaN
+1       two  5   6   NaN   8   world
+2     three  9  10  11.0  12     foo
+```
+
+* `pandas.read_csv` has many default NA value representations, those can be disabled with the option `keep_default_na`
+
+```python
+>>> result2 = pd.read_csv("ex5.csv", keep_default_na=False)
+>>> result2
+  something  a   b   c   d message
+0       one  1   2   3   4      NA
+1       two  5   6       8   world
+2     three  9  10  11  12     foo
+>>> result2.isna()
+   something      a      b      c      d  message
+0      False  False  False  False  False    False
+1      False  False  False  False  False    False
+2      False  False  False  False  False    False
+>>> result3 = pd.read_csv("ex5.csv", keep_default_na=False, na_values=["NA"])
+>>> result3
+  something  a   b   c   d message
+0       one  1   2   3   4     NaN
+1       two  5   6       8   world
+2     three  9  10  11  12     foo
+>>> result3.isna()
+   something      a      b      c      d  message
+0      False  False  False  False  False     True
+1      False  False  False  False  False    False
+2      False  False  False  False  False    False
+>>>
+```
+
+* Different NA sentinels can be specified for each column in a dictionary
+
+```python
+>>> sentinels = {"message": ["foo", "NA"], "something": ["two"]}
+>>> pd.read_csv("ex5.csv", na_values=sentinels, keep_default_na=False)
+  something  a   b   c   d message
+0       one  1   2   3   4     NaN
+1       NaN  5   6       8   world
+2     three  9  10  11  12     NaN
+```
 

@@ -40,3 +40,92 @@
   
 To deal with the chaotic nature of the data in the world, loading functions (like `pandas.load_csv`) have many optional arguments.
 It can be overwhelming and not nessesary to learn them all, always can look into pandas documentation for examples.
+
+```bash
+# Checking the example in bash
+
+> cat ex1.csv
+a,b,c,d,message
+1,2,3,4,hello
+5,6,7,8,world
+9,10,11,12,foo
+```
+
+The example is comma-delimited - we can use `pandas.read_csv` to read it into a DataFrame:
+
+```python
+>>> f1 = open("../../../tmp/pydata-book/examples/ex1.csv")
+>>> df
+   a   b   c   d message
+   0  1   2   3   4   hello
+   1  5   6   7   8   world
+   2  9  10  11  12     foo
+
+```
+A file will not always have a header row, like ex2.csv
+
+```bash
+> cat ex2.csv
+1,2,3,4,hello
+5,6,7,8,world
+9,10,11,12,foo
+```
+
+* Either set pandas to set a default column names or specify them
+
+```python
+>>> f2 = open("../../../tmp/pydata-book/examples/ex2.csv")
+>>> pd.read_csv(f2, header=None)
+   0   1   2   3      4
+   0  1   2   3   4  hello
+   1  5   6   7   8  world
+   2  9  10  11  12    foo
+>>> pd.read_csv(f2, names=["a","b","c","d","message"])
+      a   b   c   d message
+   0  1   2   3   4   hello
+   1  5   6   7   8   world
+   2  9  10  11  12     foo
+```
+
+* in case of asigning the `message` column to be the index of returned DF - either indicate the column at index 4 or named "message" using the `index_col` argument
+
+```python
+>>> f2 = open("../../../tmp/pydata-book/examples/ex2.csv")
+>>> pd.read_csv(f2, names=names, index_col="message")
+a   b   c   d
+message
+hello    1   2   3   4
+world    5   6   7   8
+foo      9  10  11  12
+```
+
+* For hirarchical index from multiple columns, pass a list of column numbers or names
+
+```bash
+> cat csv_mindex.csv
+key1,key2,value1,value2
+one,a,1,2
+one,b,3,4
+one,c,5,6
+one,d,7,8
+two,a,9,10
+two,b,11,12
+two,c,13,14
+two,d,15,16
+```
+```python
+>>> f3 = open("../../../tmp/pydata-book/examples/csv_mindex.csv")
+>>> parsed = pd.read_csv(f3, index_col=["key1", "key2"])
+>>> parsed
+           value1  value2
+key1 key2
+one  a          1       2
+     b          3       4
+     c          5       6
+     d          7       8
+two  a          9      10
+     b         11      12
+     c         13      14
+     d         15      16
+```
+

@@ -742,8 +742,8 @@ In arithmetic operations between differently indexed objects is possible to fill
 | `sub`, `rsub`	| Methods for subtraction (-) |
 | `div`, `rdiv`	| Methods for division (/) |
 | `floordiv`, `rfloordiv` |	Methods for floor division (//) |
-| `mul`, `rmul`	| Methods for multiplication (*) |
-| `pow`, `rpow`	| Methods for exponentiation (**) |
+| `mul`, `rmul`	| Methods for multiplication (\*) |
+| `pow`, `rpow`	| Methods for exponentiation (\*\*) |
 
 **Operations between DataFrame and Series**
 
